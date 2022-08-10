@@ -1,4 +1,4 @@
-import { PropsWithChildren, ReactNode } from "react";
+import { PropsWithChildren } from "react";
 import {
   Avatar,
   Box,
@@ -140,9 +140,17 @@ export const Shell = ({ children }: PropsWithChildren<{}>) => {
               <Heading size="md" fontWeight="extrabold" mb="6">
                 Questionnaire
               </Heading>
-              <Box flex="1" borderWidth="3px" borderStyle="dashed" rounded="xl">
+              <Flex
+                direction="column"
+                justifyContent="center"
+                alignItems="center"
+                flex="1 1 auto"
+                borderWidth="3px"
+                borderStyle="dashed"
+                rounded="xl"
+              >
                 {children}
-              </Box>
+              </Flex>
             </Flex>
           </Flex>
         </Box>
