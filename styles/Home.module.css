@@ -12,7 +12,6 @@
   align-items: center;
 }
 
-
 .title a:hover,
 .title a:focus,
 .title a:active {
@@ -30,3 +29,8 @@
   text-align: center;
 }
 
+@media (min-width: 80em) {
+  .container {
+    width: 70%;
+  }
+}

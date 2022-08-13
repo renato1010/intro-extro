@@ -24,7 +24,14 @@ export const createHomeInitialState: (s: HomeState) => HomeState = () => {
 export type ActionKind = "ADD_ANSWER" | "SHOW_NEXT_QUESTION";
 export type ADD_ANSWER_ACTION = { type: "ADD_ANSWER"; payload: AnswerChoices };
 export type SHOW_NEXT_ACTION = { type: "SHOW_NEXT_QUESTION"; payload: null };
-export type HomeAction = ADD_ANSWER_ACTION | SHOW_NEXT_ACTION;
+export type SHOW_PREVIOUS_ACTION = {
+  type: "SHOW_PREVIOUS_QUESTION";
+  payload: null;
+};
+export type HomeAction =
+  | ADD_ANSWER_ACTION
+  | SHOW_NEXT_ACTION
+  | SHOW_PREVIOUS_ACTION;
 export type HomeReducer = Reducer<HomeState, HomeAction>;
 
 // assert all actions was considered within switch statement
@@ -45,6 +52,8 @@ export const homeReducer: HomeReducer = (
       };
     case "SHOW_NEXT_QUESTION":
       return { ...state, currentQuestion: state["currentQuestion"] + 1 };
+    case "SHOW_PREVIOUS_QUESTION":
+      return { ...state, currentQuestion: state["currentQuestion"] - 1 };
     default:
       assertUnreachable(type);
       return state;

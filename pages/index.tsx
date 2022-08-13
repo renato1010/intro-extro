@@ -22,7 +22,12 @@ const Home: NextPage = () => {
   const { currentQuestion, questions, answers, currentScore } = state;
   const onAnswerSelect = (choice: AnswerChoices) => {
     dispatch({ type: "ADD_ANSWER", payload: choice });
+  };
+  const onNextQuestion = () => {
     dispatch({ type: "SHOW_NEXT_QUESTION", payload: null });
+  };
+  const onPreviousQuestion = () => {
+    dispatch({ type: "SHOW_PREVIOUS_QUESTION", payload: null });
   };
   return (
     <div className={styles.container}>
@@ -40,7 +45,10 @@ const Home: NextPage = () => {
           .map(({ question, choices }) => (
             <MultipleOptionsQuestion
               key={question}
+              questionsLength={questions.length}
               onAnswerSelect={onAnswerSelect}
+              onNextQuestion={onNextQuestion}
+              onPreviousQuestion={onPreviousQuestion}
               option={{ question, choices }}
               index={currentQuestion}
             />

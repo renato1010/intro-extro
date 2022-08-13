@@ -7,6 +7,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { AnswerChoices } from "./_data";
+import { SwitchQuestionBtn } from "./switch-question-btn";
 
 type RadioBoxProps = {
   choice: AnswerChoices;
@@ -43,12 +44,18 @@ const RadioBox = ({
 };
 type MultipleChoiceAnswersProps = {
   choices: AnswerChoices[];
+  questionsLength: number;
   onAnswerSelect: (c: AnswerChoices) => void;
+  onNextQuestion: () => void;
+  onPreviousQuestion:() => void;
   index?: number;
 };
 const MultipleChoiceAnswers = ({
   choices,
+  questionsLength,
   onAnswerSelect,
+  onNextQuestion,
+  onPreviousQuestion,
   index = 1,
 }: MultipleChoiceAnswersProps) => {
   const { getRootProps, getRadioProps } = useRadioGroup({
@@ -56,7 +63,7 @@ const MultipleChoiceAnswers = ({
   });
   const group = getRootProps();
   return (
-    <VStack {...group}>
+    <VStack w="full" {...group}>
       {choices.map((choice) => {
         const radio = getRadioProps({
           value: choice.answer,
@@ -72,6 +79,12 @@ const MultipleChoiceAnswers = ({
           </RadioBox>
         );
       })}
+      <SwitchQuestionBtn
+        currentQuestionIdx={index}
+        questionsLength={questionsLength}
+        onNextQuestion={onNextQuestion}
+        onPreviousQuestion={onPreviousQuestion}
+      />
     </VStack>
   );
 };
