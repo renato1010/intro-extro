@@ -1,10 +1,11 @@
 import { Box } from "@chakra-ui/react";
+import { MouseEventHandler } from "react";
 import { HiMenu, HiX } from "react-icons/hi";
 
 type MobileMenuButtonProps = {
   isOpen: boolean;
-  onClick: React.MouseEventHandler<HTMLDivElement> &
-    React.MouseEventHandler<HTMLButtonElement>;
+  onClick: MouseEventHandler<HTMLDivElement> &
+    MouseEventHandler<HTMLButtonElement>;
 };
 export const MobileMenuButton = ({
   onClick,

@@ -11,10 +11,7 @@ import {
 } from "@utilities/home";
 import styles from "../styles/Home.module.css";
 import { MultipleOptionsQuestion } from "@components/multiple-choice-question";
-import {
-  AnswerChoices,
-  IntroExtroQuestion,
-} from "@components/multiple-choice-question/_data";
+import { AnswerChoices } from "@components/multiple-choice-question/_data";
 
 type HomePageProps = { initialState: HomeState };
 export const getServerSideProps: GetServerSideProps = async (): Promise<
@@ -57,7 +54,7 @@ const Home: NextPage<HomePageProps> = ({ initialState }) => {
   const onPreviousQuestion = () => {
     dispatch({ type: "SHOW_PREVIOUS_QUESTION", payload: null });
   };
-  console.log({ answers });
+  console.log({ answers, currentScore });
   return (
     <div className={styles.container}>
       <Head>

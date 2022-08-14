@@ -23,7 +23,7 @@ import { SidebarLink } from "./SidebarLink";
 import { useMobileMenuState } from "./useMobileMenuState";
 import { UserInfo } from "./UserInfo";
 
-export const Shell = ({ children }: PropsWithChildren<{}>) => {
+export const Shell = ({ children }: PropsWithChildren<Record<string,unknown>>) => {
   const { isOpen, toggle } = useMobileMenuState();
   return (
     <Flex
