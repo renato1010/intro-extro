@@ -17,9 +17,9 @@ export const initialHomeState: HomeState = {
   answers: [],
   currentScore: 0,
 };
-export const createHomeInitialState: (s: HomeState) => HomeState = () => {
-  return initialHomeState;
-};
+export const createHomeInitialState: (s: HomeState) => HomeState = (
+  init: HomeState
+) => init;
 
 export type ActionKind = "ADD_ANSWER" | "SHOW_NEXT_QUESTION";
 export type ADD_ANSWER_ACTION = { type: "ADD_ANSWER"; payload: AnswerChoices };

@@ -1,22 +1,50 @@
 import { useReducer } from "react";
-import type { NextPage } from "next";
+import type { GetServerSidePropsResult, NextPage } from "next";
 import Head from "next/head";
+import { type GetServerSideProps } from "next";
+import { prisma } from "db";
 import {
   homeReducer,
   createHomeInitialState,
   HomeReducer,
-  initialHomeState,
   HomeState,
 } from "@utilities/home";
 import styles from "../styles/Home.module.css";
 import { MultipleOptionsQuestion } from "@components/multiple-choice-question";
-import { AnswerChoices } from "@components/multiple-choice-question/_data";
+import {
+  AnswerChoices,
+  IntroExtroQuestion,
+} from "@components/multiple-choice-question/_data";
 
-const Home: NextPage = () => {
+type HomePageProps = { initialState: HomeState };
+export const getServerSideProps: GetServerSideProps = async (): Promise<
+  GetServerSidePropsResult<HomePageProps>
+> => {
+  const questions = await prisma.question.findMany({
+    select: {
+      question: true,
+      choices: {
+        select: { answer: true, option: true, score: true },
+      },
+    },
+  });
+  return {
+    props: {
+      initialState: {
+        currentQuestion: 0,
+        answers: [],
+        currentScore: 0,
+        questions: JSON.parse(JSON.stringify(questions)),
+      },
+    },
+  };
+};
+
+const Home: NextPage<HomePageProps> = ({ initialState }) => {
   // pass initializer function to avoid recreating initial state on next renders
   const [state, dispatch] = useReducer<HomeReducer, HomeState>(
     homeReducer,
-    initialHomeState,
+    initialState,
     createHomeInitialState
   );
   const { currentQuestion, questions, answers, currentScore } = state;
@@ -29,6 +57,7 @@ const Home: NextPage = () => {
   const onPreviousQuestion = () => {
     dispatch({ type: "SHOW_PREVIOUS_QUESTION", payload: null });
   };
+  console.log({ answers });
   return (
     <div className={styles.container}>
       <Head>
