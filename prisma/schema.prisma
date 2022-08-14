@@ -28,3 +28,9 @@ model Choice {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @default(now())
 }
+
+model Result {
+  id         String @id @default(cuid())
+  sessionId  String
+  totalScore Float
+}

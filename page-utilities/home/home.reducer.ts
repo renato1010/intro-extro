@@ -35,6 +35,7 @@ export type HomeAction =
 export type HomeReducer = Reducer<HomeState, HomeAction>;
 
 // assert all actions was considered within switch statement
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const assertUnreachable = (_: never) => {
   throw new Error("Not exhaustive switch at homeReducer");
 };
