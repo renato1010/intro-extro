@@ -1,7 +1,7 @@
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import type { GetServerSidePropsResult, NextPage } from "next";
 import Head from "next/head";
-import { type GetServerSideProps } from "next";
+import { type GetStaticProps } from "next";
 import cuid from "cuid";
 import { prisma } from "db";
 import {
@@ -15,7 +15,7 @@ import { MultipleOptionsQuestion } from "@components/multiple-choice-question";
 import { AnswerChoices } from "@components/multiple-choice-question/_data";
 
 type HomePageProps = { initialState: HomeState; sessionId: string };
-export const getServerSideProps: GetServerSideProps = async (): Promise<
+export const getStaticProps: GetStaticProps = async (): Promise<
   GetServerSidePropsResult<HomePageProps>
 > => {
   const questions = await prisma.question.findMany({
@@ -46,6 +46,11 @@ const Home: NextPage<HomePageProps> = ({ initialState, sessionId }) => {
     initialState,
     createHomeInitialState
   );
+  useEffect(() => {
+    if (sessionId) {
+      sessionStorage.setItem("sessionId", sessionId);
+    }
+  }, [sessionId]);
   const { currentQuestion, questions, answers, currentScore } = state;
   const onAnswerSelect = (choice: AnswerChoices) => {
     dispatch({ type: "ADD_ANSWER", payload: choice });
@@ -56,7 +61,11 @@ const Home: NextPage<HomePageProps> = ({ initialState, sessionId }) => {
   const onPreviousQuestion = () => {
     dispatch({ type: "SHOW_PREVIOUS_QUESTION", payload: null });
   };
-  console.log({ initialState, sessionId, answers, currentScore });
+  console.log({
+    answers,
+    currentScore,
+    sessionId,
+  });
   return (
     <div className={styles.container}>
       <Head>
