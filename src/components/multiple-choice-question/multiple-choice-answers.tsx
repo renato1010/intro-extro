@@ -45,18 +45,22 @@ const RadioBox = ({
 type MultipleChoiceAnswersProps = {
   choices: AnswerChoices[];
   questionsLength: number;
+  answersLength: number;
+  index?: number;
   onAnswerSelect: (c: AnswerChoices) => void;
   onNextQuestion: () => void;
-  onPreviousQuestion:() => void;
-  index?: number;
+  onPreviousQuestion: () => void;
+  onSubmitAnswers:() => void;
 };
 const MultipleChoiceAnswers = ({
   choices,
   questionsLength,
+  answersLength,
+  index = 1,
   onAnswerSelect,
   onNextQuestion,
   onPreviousQuestion,
-  index = 1,
+  onSubmitAnswers
 }: MultipleChoiceAnswersProps) => {
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: `question${index}`,
@@ -82,8 +86,10 @@ const MultipleChoiceAnswers = ({
       <SwitchQuestionBtn
         currentQuestionIdx={index}
         questionsLength={questionsLength}
+        answersLength={answersLength}
         onNextQuestion={onNextQuestion}
         onPreviousQuestion={onPreviousQuestion}
+        onSubmitAnswers={onSubmitAnswers}
       />
     </VStack>
   );

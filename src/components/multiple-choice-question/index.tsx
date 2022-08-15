@@ -6,17 +6,21 @@ type IntroExtroQuestionProps = {
   option: IntroExtroQuestion;
   index: number;
   questionsLength: number;
+  answersLength:number,
   onAnswerSelect: (c: AnswerChoices) => void;
   onNextQuestion: () => void;
   onPreviousQuestion: () => void;
+  onSubmitAnswers: () => void;
 };
 const MultipleOptionsQuestion = ({
   option: { question, choices },
   questionsLength,
+  answersLength,
+  index,
   onAnswerSelect,
   onNextQuestion,
   onPreviousQuestion,
-  index,
+  onSubmitAnswers
 }: IntroExtroQuestionProps) => {
   return (
     <VStack w="80%">
@@ -28,12 +32,14 @@ const MultipleOptionsQuestion = ({
         All questions are required
       </Text>
       <MultipleChoiceAnswers
-        onAnswerSelect={onAnswerSelect}
-        onNextQuestion={onNextQuestion}
-        onPreviousQuestion={onPreviousQuestion}
         choices={choices}
         index={index}
         questionsLength={questionsLength}
+        answersLength={answersLength}
+        onAnswerSelect={onAnswerSelect}
+        onNextQuestion={onNextQuestion}
+        onPreviousQuestion={onPreviousQuestion}
+        onSubmitAnswers={onSubmitAnswers}
       />
     </VStack>
   );

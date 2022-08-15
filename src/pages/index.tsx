@@ -4,15 +4,16 @@ import Head from "next/head";
 import { type GetStaticProps } from "next";
 import cuid from "cuid";
 import { prisma } from "db";
+import { trpc } from "src/utils/trpc";
 import {
   homeReducer,
   createHomeInitialState,
   HomeReducer,
   HomeState,
 } from "@utilities/home";
-import styles from "../styles/Home.module.css";
 import { MultipleOptionsQuestion } from "@components/multiple-choice-question";
-import { AnswerChoices } from "@components/multiple-choice-question/_data";
+import { type AnswerChoices } from "@components/multiple-choice-question/_data";
+import styles from "../styles/Home.module.css";
 
 type HomePageProps = { initialState: HomeState; sessionId: string };
 export const getStaticProps: GetStaticProps = async (): Promise<
@@ -46,12 +47,13 @@ const Home: NextPage<HomePageProps> = ({ initialState, sessionId }) => {
     initialState,
     createHomeInitialState
   );
+  const responseMutation = trpc.useMutation("putAnswer");
   useEffect(() => {
     if (sessionId) {
       sessionStorage.setItem("sessionId", sessionId);
     }
   }, [sessionId]);
-  const { currentQuestion, questions, answers, currentScore } = state;
+  const { currentQuestion, questions, answers } = state;
   const onAnswerSelect = (choice: AnswerChoices) => {
     dispatch({ type: "ADD_ANSWER", payload: choice });
   };
@@ -61,11 +63,14 @@ const Home: NextPage<HomePageProps> = ({ initialState, sessionId }) => {
   const onPreviousQuestion = () => {
     dispatch({ type: "SHOW_PREVIOUS_QUESTION", payload: null });
   };
+  const onSubmitAnswers = () => {
+    const mutationBody = { sessionId, answers };
+    responseMutation.mutate(mutationBody);
+  };
   console.log({
-    answers,
-    currentScore,
-    sessionId,
+    result: responseMutation.data?.result,
   });
+
   return (
     <div className={styles.container}>
       <Head>
@@ -83,11 +88,13 @@ const Home: NextPage<HomePageProps> = ({ initialState, sessionId }) => {
             <MultipleOptionsQuestion
               key={question}
               questionsLength={questions.length}
+              answersLength={answers.length}
+              option={{ question, choices }}
+              index={currentQuestion}
               onAnswerSelect={onAnswerSelect}
               onNextQuestion={onNextQuestion}
               onPreviousQuestion={onPreviousQuestion}
-              option={{ question, choices }}
-              index={currentQuestion}
+              onSubmitAnswers={onSubmitAnswers}
             />
           ))}
       </main>
