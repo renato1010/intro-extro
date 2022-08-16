@@ -34,3 +34,10 @@ You can start editing the page by modifying `pages/index.tsx`. The page auto-upd
 ## App Architecture
 
 ![architecture image](https://icons-images.s3.us-east-2.amazonaws.com/introextro.drawio.png)
+
+## Test E2E
+Test for home page run:
+
+```bash
+npm run test:e2e
+```
