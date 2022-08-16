@@ -1,4 +1,5 @@
 import { PropsWithChildren } from "react";
+import Link from "next/link";
 import {
   Avatar,
   Box,
@@ -23,7 +24,9 @@ import { SidebarLink } from "./SidebarLink";
 import { useMobileMenuState } from "./useMobileMenuState";
 import { UserInfo } from "./UserInfo";
 
-export const Shell = ({ children }: PropsWithChildren<Record<string,unknown>>) => {
+export const Shell = ({
+  children,
+}: PropsWithChildren<Record<string, unknown>>) => {
   const { isOpen, toggle } = useMobileMenuState();
   return (
     <Flex
@@ -79,13 +82,24 @@ export const Shell = ({ children }: PropsWithChildren<Record<string,unknown>>) =
               <SidebarLink icon={<BsPencilSquare />}>Drafts</SidebarLink>
             </Stack>
             <Stack pb="6">
-              <NavSectionTitle>Chats</NavSectionTitle>
-              <SidebarLink>🎉 Inbox</SidebarLink>
-              <SidebarLink>👍 Personal</SidebarLink>
-              <SidebarLink>🦋 Work</SidebarLink>
+              <NavSectionTitle>Pages</NavSectionTitle>
+
+              <SidebarLink>
+                <Link href="/">
+                  <span>🏠 Home</span>
+                </Link>
+              </SidebarLink>
+
+              <SidebarLink>
+                <Link href="/result">
+                  <span>👍 Result</span>
+                </Link>
+              </SidebarLink>
+
+              <SidebarLink>🦋 Not Working yet</SidebarLink>
             </Stack>
             <Stack>
-              <NavSectionTitle>Members</NavSectionTitle>
+              <NavSectionTitle>Fake Members</NavSectionTitle>
               {data.users.map((user, index) => (
                 <SidebarLink
                   key={index}

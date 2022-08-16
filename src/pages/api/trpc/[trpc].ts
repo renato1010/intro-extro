@@ -11,15 +11,15 @@ const choice = z.object({
 });
 export const appRouter = trcp
   .router()
-  .query("hello", {
-    input: z
-      .object({
-        text: z.string().nullish(),
-      })
-      .nullish(),
-    resolve({ input }) {
+  .query("resultBySessionId", {
+    input: z.string().cuid(),
+    async resolve({ input }) {
+      const result = await prisma.result.findFirst({
+        where: { sessionId: input },
+        select: { totalScore: true },
+      });
       return {
-        greeting: `hello ${input?.text ?? "world"}`,
+        score: result?.totalScore,
       };
     },
   })

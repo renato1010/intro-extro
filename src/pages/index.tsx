@@ -1,7 +1,7 @@
 import { useEffect, useReducer } from "react";
-import type { GetServerSidePropsResult, NextPage } from "next";
+import type { GetServerSidePropsResult, NextPage, GetStaticProps } from "next";
 import Head from "next/head";
-import { type GetStaticProps } from "next";
+import { useRouter } from "next/router";
 import cuid from "cuid";
 import { prisma } from "db";
 import { trpc } from "src/utils/trpc";
@@ -47,12 +47,21 @@ const Home: NextPage<HomePageProps> = ({ initialState, sessionId }) => {
     initialState,
     createHomeInitialState
   );
+  const router = useRouter();
   const responseMutation = trpc.useMutation("putAnswer");
+
   useEffect(() => {
     if (sessionId) {
       sessionStorage.setItem("sessionId", sessionId);
     }
   }, [sessionId]);
+  useEffect(() => {
+    const sessionId = sessionStorage.getItem("sessionId");
+    const hasMutationSuccess = responseMutation.isSuccess;
+    if (sessionId && hasMutationSuccess) {
+      router.push("/result");
+    }
+  }, [sessionId, responseMutation.isSuccess, router]);
   const { currentQuestion, questions, answers } = state;
   const onAnswerSelect = (choice: AnswerChoices) => {
     dispatch({ type: "ADD_ANSWER", payload: choice });
@@ -67,10 +76,6 @@ const Home: NextPage<HomePageProps> = ({ initialState, sessionId }) => {
     const mutationBody = { sessionId, answers };
     responseMutation.mutate(mutationBody);
   };
-  console.log({
-    result: responseMutation.data?.result,
-  });
-
   return (
     <div className={styles.container}>
       <Head>
